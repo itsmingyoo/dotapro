@@ -80,7 +80,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'client/dist')
+            os.path.join(BASE_DIR, 'staticfiles')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -177,5 +177,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = '/assets/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'client/dist/assets'
+    BASE_DIR / 'client/dist'
 ]
