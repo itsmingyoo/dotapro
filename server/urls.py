@@ -19,7 +19,7 @@ from django.urls import path, re_path
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin', admin.site.urls),
     # Add API or other URL patterns as needed
     re_path(r'^', TemplateView.as_view(template_name='index.html')),
 ]
