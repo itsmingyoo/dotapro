@@ -13,6 +13,12 @@ export default defineConfig({
     },
   },
   build: {
-    cssCodeSplit: true, // Split CSS into separate files for each async chunk
+    rollupOptions: {
+      output: {
+        entryFileNames: '[name].[hash].js',
+        chunkFileNames: '[name].[hash].js',
+        assetFileNames: '[name].[hash].[ext]',
+      },
+    },
   },
 });
