@@ -12,4 +12,7 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    cssCodeSplit: true, // Split CSS into separate files for each async chunk
+  },
 });

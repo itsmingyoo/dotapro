@@ -70,6 +70,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'urls'
 
+WHITENOISE_MIMETYPES = {
+    ".css": "text/css",
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -168,13 +172,8 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATIC_URL = '/static/'
+STATIC_URL = '/assets/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'client/dist/assets'
 ]
-
-WHITENOISE_MIMETYPES = {
-    ".css": "text/css",
-    ".html": "text/html",
-}
