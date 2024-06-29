@@ -66,8 +66,8 @@ ROOT_URLCONF = 'urls'
 
 TEMPLATES = [
     {
-        # 'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # 'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
