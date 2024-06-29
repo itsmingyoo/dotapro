@@ -72,6 +72,8 @@ ROOT_URLCONF = 'urls'
 
 WHITENOISE_MIMETYPES = {
     ".css": "text/css",
+    ".svg": "image/svg+xml",
+    ".html": "text/html",
 }
 
 TEMPLATES = [
