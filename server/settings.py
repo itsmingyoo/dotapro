@@ -88,6 +88,8 @@ TEMPLATES = [
     },
 ]
 
+
+
 WSGI_APPLICATION = 'wsgi.application'
 
 
@@ -109,8 +111,13 @@ else:
 
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    print('😲🤑😲😲☹ NOT DEBUG =>>> SETTING STATIC_ROOT AND STATICFILES_STORAGE', STATIC_ROOT, STATICFILES_STORAGE)
+    # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STORAGES = {
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+    print('😲🤑😲😲☹ NOT DEBUG =>>> SETTING STATIC_ROOT AND STORAGES ===>>>', STATIC_ROOT, STORAGES)
 
 # DATABASES = {
 #     'default': {
@@ -166,3 +173,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'client/dist/assets'
 ]
+
+WHITENOISE_MIMETYPES = {
+    ".css": "text/css",
+    ".html": "text/html",
+}
