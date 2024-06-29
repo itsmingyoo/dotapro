@@ -20,9 +20,19 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('api/', include('mynewapp.urls')),
-    re_path('.*', TemplateView.as_view(template_name='index.html')),
+    # Add API or other URL patterns as needed
+    re_path(r'^', TemplateView.as_view(template_name='index.html')),
 ]
+
+# from django.contrib import admin
+# from django.urls import path, re_path
+# from django.views.generic import TemplateView
+
+# urlpatterns = [
+#     path('admin/', admin.site.urls),
+#     # path('api/', include('mynewapp.urls')),
+#     re_path('.*', TemplateView.as_view(template_name='index.html')),
+# ]
 
 # urlpatterns = [
 #     path('admin/', admin.site.urls),
