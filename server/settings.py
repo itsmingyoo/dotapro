@@ -69,8 +69,9 @@ ROOT_URLCONF = 'urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'client/dist')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,9 +81,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
         },
-        'DIRS': [
-            os.path.join(BASE_DIR, '/client/dist')
-        ],
     },
 ]
 
@@ -160,5 +158,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = '/assets/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '/client/dist')
+    os.path.join(BASE_DIR, 'client/dist')
 ]
