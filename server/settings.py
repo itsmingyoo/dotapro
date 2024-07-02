@@ -34,7 +34,8 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1'] # Note: Render will only serve static files if debug mode is turned on. This should be turned off for this project since we're using React to handle static/media files
+# Note: Render will only serve static files if debug mode is turned on. This should be turned off for this project since we're using React to handle static/media files
+DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
 
 # ALLOWED_HOSTS = ['dotapro.onrender.com']
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
@@ -49,16 +50,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
+
     'corsheaders',
-    'api',
+
+    # Include REST APIs below with the format 'folder_name.apps.DefinitionNameConfig'
+    'rest_framework',
+    'test_routes.apps.TestRoutesConfig',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', # needs to be top level. ref: docs
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -94,10 +98,7 @@ TEMPLATES = [
     },
 ]
 
-
-
 WSGI_APPLICATION = 'wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -106,7 +107,6 @@ if DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            # 'NAME': BASE_DIR / 'db.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
         }
     }
@@ -117,21 +117,12 @@ else:
 
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     STORAGES = {
         "staticfiles": {
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
         },
     }
-    print('😲🤑😲😲☹ NOT DEBUG =>>> SETTING STATIC_ROOT AND STORAGES ===>>>', STATIC_ROOT, STORAGES)
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
+    print('😲🤑😲😲☹ DEBUG IS OFF =>>> SETTING STATIC_ROOT AND STORAGES ===>>>', STATIC_ROOT, STORAGES)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -167,15 +158,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-# STATIC_URL = '/static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'client/dist'
 ]
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

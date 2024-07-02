@@ -1,4 +1,5 @@
 """
+Main URL handler
 URL configuration for DotaPro project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -15,25 +16,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('admin', admin.site.urls),
-    # Add API or other URL patterns as needed
+    # This would be localhost:8000/admin/
+    path('admin/', admin.site.urls),
+
+    # Add API or other URL patterns as needed using 'include'
+    path('api/', include('test_routes.urls')),
+
+    # Catch All non-existing routes and redirect to index.html page
     re_path(r'^', TemplateView.as_view(template_name='index.html')),
 ]
-
-# from django.contrib import admin
-# from django.urls import path, re_path
-# from django.views.generic import TemplateView
-
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-#     # path('api/', include('mynewapp.urls')),
-#     re_path('.*', TemplateView.as_view(template_name='index.html')),
-# ]
-
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-# ]
