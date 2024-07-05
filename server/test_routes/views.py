@@ -51,7 +51,7 @@ def getRoutesRestMethod(request):
         - HTTP Code Response (i.e. HTTP 200 OK)
         - Allow: Get, OPTIONS
         - Content-Type: application/json
-        -  Vary: Accept
+        - Vary: Accept
         [
             '/api/test/1',
             '/api/test/2',

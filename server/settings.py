@@ -42,7 +42,6 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,9 +51,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'corsheaders',
-
-    # Include REST APIs below with the format 'folder_name.apps.DefinitionNameConfig'
     'rest_framework',
+
+    # Include REST APIs / apps
+    'api.gemini_ai.apps.GeminiAiConfig',
     'test_routes.apps.TestRoutesConfig',
 ]
 
@@ -107,9 +107,10 @@ if DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+            'NAME': os.path.join(BASE_DIR, 'server/db.sqlite3'),
         }
     }
+    STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
 else:
     DATABASES = {
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600),
