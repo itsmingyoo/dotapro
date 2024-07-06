@@ -5,18 +5,20 @@
 # 15 RPM
 # 1 million TPM
 # 1,500 RPD
+
 import os
-import pathlib
+# import pathlib
 import textwrap
 import google.generativeai as genai
 
-from IPython.display import display
+# from IPython.display import display
 from IPython.display import Markdown
 
 
 def to_markdown(text):
-  text = text.replace('•', '  *')
-  return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
+    text = text.replace('•', '  *')
+    return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
+
 
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 

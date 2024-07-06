@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-import dj_database_url # type: ignore
+import dj_database_url  # type: ignore
 import mimetypes
 
 mimetypes.add_type("text/css", ".css", True)
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     # Include REST APIs / apps
+    'api.open_dota.apps.OpenDotaConfig',
     'api.gemini_ai.apps.GeminiAiConfig',
     'test_routes.apps.TestRoutesConfig',
 ]
