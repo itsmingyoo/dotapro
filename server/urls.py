@@ -23,8 +23,18 @@ urlpatterns = [
     # This would be localhost:8000/admin/
     path('admin/', admin.site.urls),
 
+    # social-auth
+    path('', include('social_django.urls', namespace='social')),
+
+    # PSA URLs
+    # url(r'', include('social_django.urls', namespace='social'))
+    # <a href="{% url 'social:begin' 'provider-name' %}">Login</a>
+    # {% url 'social:begin' 'github' %}
+    # http://example.com/login/github
+
     # Add API or other URL patterns as needed using 'include'
     path('api/', include('test_routes.urls')),
+
 
     # Catch All non-existing routes and redirect to index.html page
     re_path(r'^', TemplateView.as_view(template_name='index.html')),

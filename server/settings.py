@@ -9,19 +9,19 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
 from pathlib import Path
 from dotenv import load_dotenv
 import os
 import dj_database_url  # type: ignore
 import mimetypes
 
+
 mimetypes.add_type("text/css", ".css", True)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print('😋😚😐😏🤗😍 BASE_DIR ===>>>',BASE_DIR)
+
 
 # load_dotenv(os.path.join(BASE_DIR, '.env'))
 load_dotenv(BASE_DIR / '.env')
@@ -30,12 +30,15 @@ load_dotenv(BASE_DIR / '.env')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Note: Render will only serve static files if debug mode is turned on. This should be turned off for this project since we're using React to handle static/media files
 DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
+
 
 # ALLOWED_HOSTS = ['dotapro.onrender.com']
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
@@ -50,14 +53,26 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+
     'corsheaders',
     'rest_framework',
+
+
+    # social-core
+    'social_django',
+
 
     # Include REST APIs / apps
     'api.open_dota.apps.OpenDotaConfig',
     'api.gemini_ai.apps.GeminiAiConfig',
+
+
+    'api.steam_open_id.apps.SteamOpenIdConfig', # Steam OpenID
+
+
     'test_routes.apps.TestRoutesConfig',
 ]
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', # needs to be top level. ref: docs
@@ -69,17 +84,29 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+
+    # social-core
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+        # how to use:
+        # get_message(request, exception)
+        # get_redirect_uri(request, exception)
+        # By default, the message is the exception message and the URL for the redirect is the location specified by the LOGIN_ERROR_URL setting.
 ]
+
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+
 ROOT_URLCONF = 'urls'
+
 
 WHITENOISE_MIMETYPES = {
     ".css": "text/css",
     ".svg": "image/svg+xml",
     ".html": "text/html",
 }
+
 
 TEMPLATES = [
     {
@@ -94,12 +121,86 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # social-core - OAuth, steam's 'OpenID' login, etc goes here
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
 
+
 WSGI_APPLICATION = 'wsgi.application'
+
+
+# SOCIAL CORE / SOCIAL AUTH CONFIGURATION
+
+
+# social-core auth backends (https://python-social-auth.readthedocs.io/en/latest/backends/index.html)
+AUTHENTICATION_BACKENDS = [
+  "social_core.backends.steam.SteamOpenId", # steam login
+  'social_core.backends.google.GoogleOAuth2',
+  'social_core.backends.open_id.OpenIdAuth',
+
+  'django.contrib.auth.backends.ModelBackend',
+]
+
+
+# LOGIN_URL = "/login/"
+# LOGIN_REDIRECT_URL = "/done/"
+# LOGIN_ERROR_URL =
+
+
+# SOCIAL AUTH SETTINGS
+SOCIAL_AUTH_URL_NAMESPACE = 'social' # for custom namespace
+
+
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+# SOCIAL_AUTH_JSONFIELD_CUSTOM = 'django.db.models.JSONField'
+
+
+# Turn this setting on to avoid recursive import ordering which makes the application fail to load
+    # This happens because the admin module will build a set of fields to populate the search_fields property to search for related users in the administration UI,
+    # but this requires the user model to be retrieved which might not be defined at that time.
+# SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['field1', 'field2'] # fields are relevant to the user model i.e. ['username', 'first_name', 'email']
+
+
+# Steam OpenID Auth
+SOCIAL_AUTH_STEAM_API_KEY = os.getenv('STEAM_WEB_API_KEY')
+SOCIAL_AUTH_STEAM_EXTRA_DATA = ['player']
+
+
+# Google OAuth
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
+
+# You can add (or remove) several features on the social auth pipeline.
+# By default there are some pipelines on social_django:
+# social_details - Get the information we can about the user and return it in a simple format to create the user instance later. On some cases the details are already part of the auth response from the provider, but sometimes this could hit a provider API.
+# social_uid - Get the social uid from whichever service we’re authing thru. The uid is the unique identifier of the given user in the provider.
+# auth_allowed - Verifies that the current auth process is valid within the current project, this is where emails and domains whitelists are applied (if defined).
+# social_user - Checks if the current social-account is already associated in the site.
+# get_username- Make up a username for this person, appends a random string at the end if there’s any collision.
+# create_user - Create a user account if we haven’t found one yet.
+# associate_user - Create the record that associated the social account with this user.
+# extra_data - Populate the extra_data field in the social record with the values specified by settings (and the default ones like access_token, etc).
+# user_details - Update the user record with any changed info from the auth service.
+# END OF SOCIAL AUTH / SOCIAL CORE
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -165,6 +266,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'client/dist'
 ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
