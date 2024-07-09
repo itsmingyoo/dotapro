@@ -33,7 +33,7 @@ urlpatterns = [
     # http://example.com/login/github
 
     # Add API or other URL patterns as needed using 'include'
-    path('api/', include('test_routes.urls')),
+    path('api/', include('api.test_routes.urls')),
 
 
     # Catch All non-existing routes and redirect to index.html page
