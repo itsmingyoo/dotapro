@@ -157,6 +157,7 @@ AUTHENTICATION_BACKENDS = [
 
 # SOCIAL AUTH SETTINGS
 SOCIAL_AUTH_URL_NAMESPACE = 'social' # for custom namespace
+AUTH_USER_MODEL = 'steam_open_id.SteamUser' # custom user model
 
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
@@ -172,6 +173,7 @@ SOCIAL_AUTH_JSONFIELD_ENABLED = True
 # Steam OpenID Auth
 SOCIAL_AUTH_STEAM_API_KEY = os.getenv('STEAM_WEB_API_KEY')
 SOCIAL_AUTH_STEAM_EXTRA_DATA = ['player']
+SOCIAL_AUTH_STORAGE = "api.steam_open_id.models.CustomDjangoStorage"
 
 
 # Google OAuth
@@ -184,11 +186,12 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_uid',
     'social_core.pipeline.social_auth.auth_allowed',
     'social_core.pipeline.social_auth.social_user',
-    'social_core.pipeline.user.get_username',
+    'api.steam_open_id.pipeline.associate_existing_user',
+    'api.steam_open_id.pipeline.get_username',
     'social_core.pipeline.user.create_user',
     'social_core.pipeline.social_auth.associate_user',
-    'social_core.pipeline.social_auth.load_extra_data',
-    'social_core.pipeline.user.user_details',
+    # 'social_core.pipeline.social_auth.load_extra_data',
+    'api.steam_open_id.pipeline.user_details',
 )
 
 # You can add (or remove) several features on the social auth pipeline.

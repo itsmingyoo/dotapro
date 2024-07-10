@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.generic import TemplateView
+from api.steam_open_id.views import steam_login, get_user_data, logout_view, authenticate
 
 urlpatterns = [
     # This would be localhost:8000/admin/
@@ -25,6 +26,10 @@ urlpatterns = [
 
     # social-auth
     path('', include('social_django.urls', namespace='social')),
+    path('steam_login/', steam_login, name='steam_login'),
+    path('get_user_data/', get_user_data, name='get_user_data'),
+    path('logout/', logout_view, name='logout'),
+    path('authenticate/', authenticate, name='authenticate'),
 
     # PSA URLs
     # url(r'', include('social_django.urls', namespace='social'))
