@@ -12,7 +12,7 @@
 ## Project Structure
 - https://django-project-skeleton.readthedocs.io/en/latest/structure.html
 - https://github.com/Mischback/django-project-skeleton
-
+`
 project_name/
 ├── config/
 │   ├── settings/
@@ -67,3 +67,4 @@ project_name/
 │
 ├── manage.py
 │
+

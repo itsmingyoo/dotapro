@@ -149,9 +149,12 @@ AUTHENTICATION_BACKENDS = [
   'django.contrib.auth.backends.ModelBackend',
 ]
 
+SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
+    'social_core.backends.steam.SteamOpenId',
+)
 
 # LOGIN_URL = "/login/"
-# LOGIN_REDIRECT_URL = "/done/"
+LOGIN_REDIRECT_URL = "/test/auth/done/" # catches redirect url callbacks, default is /accounts/profile/
 # LOGIN_ERROR_URL =
 
 
@@ -177,6 +180,9 @@ SOCIAL_AUTH_STEAM_EXTRA_DATA = ['player']
 # Google OAuth
 # SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 # SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+
+
+SOCIAL_AUTH_STORAGE = "api.steam_open_id.models.CustomDjangoStorage"
 
 
 SOCIAL_AUTH_PIPELINE = (

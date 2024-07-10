@@ -18,19 +18,40 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.generic import TemplateView
+from api.steam_open_id import views
+
 
 urlpatterns = [
     # This would be localhost:8000/admin/
     path('admin/', admin.site.urls),
 
     # social-auth
-    path('', include('social_django.urls', namespace='social')),
 
     # PSA URLs
     # url(r'', include('social_django.urls', namespace='social'))
     # <a href="{% url 'social:begin' 'provider-name' %}">Login</a>
     # {% url 'social:begin' 'github' %}
+    # url =
     # http://example.com/login/github
+
+    # app_name = "social"
+
+    # urlpatterns = [
+    # authentication / association
+    #     path(f"login/<str:backend>{extra}", views.auth, name="begin"),
+    #     path(f"complete/<str:backend>{extra}", views.complete, name="complete"),
+
+    #     # disconnection
+    #     path(f"disconnect/<str:backend>{extra}", views.disconnect, name="disconnect"),
+    #     path(
+    #         f"disconnect/<str:backend>/<int:association_id>{extra}",
+    #         views.disconnect,
+    #     name="disconnect_individual",
+    #     ),
+    # ]
+    path('', include('social_django.urls', namespace='social')),
+    path('steam_login/', views.steam_login, name='steam_login'),
+
 
     # Add API or other URL patterns as needed using 'include'
     path('api/', include('api.test_routes.urls')),
