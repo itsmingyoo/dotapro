@@ -26,6 +26,6 @@ import os
 api_key=os.environ["OPEN_DOTA_API_KEY"]
 
 
-# business logic for hero rankings
+# business logic
 # grab all hero_id 's
 # call /rankings
