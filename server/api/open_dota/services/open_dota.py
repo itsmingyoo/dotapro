@@ -29,3 +29,4 @@ api_key=os.environ["OPEN_DOTA_API_KEY"]
 # business logic
 # grab all hero_id 's
 # call /rankings
+
